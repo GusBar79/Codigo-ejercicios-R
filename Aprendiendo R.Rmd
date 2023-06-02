@@ -1,0 +1,146 @@
+---
+title: "Aprendiendo R"
+author: "Gustavo Barbieri"
+date: "2023-05-30"
+output: html_document
+---
+### Instalando programas
+
+Para aprender R,  debes bajar el programa de [aqui](https://cran.r-project.org/bin/windows/base/). Es la web oficial del proyecto Cran.
+También es ideal que bajes RStudio. Ahí podrás manejar todo. Tendrás la consola, podrás escribir, guardar, abrir,  los scrips una y otra vez, y podrás ver los resultados, los gráficos, los paquetes. Baja desde [aquí](https://posit.co/download/rstudio-desktop/)
+
+### Presentación de RStudio
+Una vez que estamos en RStudio, la pantalla se divide en 4 sectores. El superior izquierdo es donde vamos a realizar los scrips, borrar, analizar, donde mayor parte del tiempo te vas a romper la cabeza pensando y analizando que poner.
+Abajo a la izquierda, es el sector donde, hasta que aprendas, es el origen de tus males, es donde aparecerán los errores, donde cuando le des enter no pasa nada, o no hace lo que pretendes.
+Luego a la derecha en la parte superior, Global environment, ahí irá apareciendo cuando tengas los datos, los valores, vectores, cuando estén activos. Hay un historial de código, etc.
+Abajo a la izquierda, ahí es un sector que de apoco te vas a ir enamorando, es donde aparecen los gráficos. También donde encontrarás los paquetes, los puedes activar, exportar etc. 
+
+### Datos base
+R tiene una serie de set de datos para practicar, están en inglés, y si usas la librería datos, los encontrarás en castellano. 
+Las librerías de R, hay miles, usarás pocas al principio, la metodología es siempre la misma. Instalas las librerías solo una vez, y luego cada vez que usas el código, activas la librería.
+Para instalar:  install.packages() y el nombre de la librería entre "" dentro del ().
+Para activar la librería ya instalada: library() y el nombre de la librería sin "" dentro del ()
+#### Ejemplo: 
+install.packages("datos")
+library(datos)
+
+### Funciones básicas
+Hay ciertas funciones básicas que vas a usar constantemente.  Lo ideal hasta que las aprendas es que las practiques unay otra vez.
+Para identificar el directorio donde vas a trabajar, le tienes que decir a R de donde traer archivos si están en el disco o en que lugar. La función es setwd(""). Hay otro camino pero por ahora vamos por aquí.
+Un truco para hacerlo sencillo y no tener que escribir todo, es usar file.choose(). Cuando usas esta función se abre una ventana para buscar y abrir un archivo. Cuando le das click al archivo, en la consola te trae la ruta. Copia y pega y no tienes que escribir. En el ejemplos tiene una #, la puedes quitar si lo haz de probar, sino queda como comentario. 
+
+#### Ejemplo:
+```{r} 
+#file.choose() #le das enter y en la consola aparece  >file.chosse()  y se abre la ventana elijes el archivo y enter. En la consola aparece la ruta:
+```
+
+"C:\\Users\\XXXX\\XXXX\\XXXX\\R ejercicios\\XXXXing.csv"
+Escribes el código sin el nombre del archivo:  
+
+setwd("C:\\Users\\XXXX\\XXXX\\XXXX\\R ejercicios")  
+
+View() abre una pestaña con el set de datos pero solo es visualización de datos.  
+
+head() trae por default los 6 primeras filas. Si quieres más o menos lo indicas así head(nombre, 7). Así te trae las 7 primeras filas  
+
+tail() trae por default las 6 últimas filas. Si quieres más o menos lo indicas así tail(nombre, 7). Así te trae las 7 últimas filas    
+
+<- es la forma para asignar datos a una variable. Si quieres por ejemplo asignar mtcars a un objeto y hacer cambios, trabajar etc, lo puedes asignar incluso con el mismo nombre, mtcars <- mtcars y le das enter. Ahora te aparecerá en la esquina superior izquierda. Data, mtcars 32obs of 11 variables.\n  
+
+
+### Tablas y gráficos de barras 
+R tiene diferentes formatos para la información, tablas, vectores, listas, dataframes, matriz.
+sigamos con los datos mtcars, si queremos ver por ejemplo los datos que figuran en la variable "cyl", podemos hacer lo siguiente:
+```{r}
+mtcars$cyl
+
+```
+
+y el output sera: [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
+\n
+Ahí lo que nos indica son la cantidad de cilindros que lleva cada auto, pero si queremos analizar cuantos autos hay por cada tipo de cilindrada, podemos usar una tabla que cuenta la frencuencia con la que aparecen cada cilindro.  
+```{r}
+table(mtcars$cyl)
+```
+
+  
+Esto nos indica que hay 11 autos con 4 cilindros, 7 autos con 6 cilindros y 14 autos con 8 cilindros.  
+
+
+Hagamos un gráfico simple para ir aprendiendo las utilidades de esto. Si usamos barplot() con el nombre del set de datos, signo $ y el nombre de la variable, nos hará un grafico de barras con cada uno de las observaciones o datos.  En este caso tendremos 32 barras, una para cada auto que irá al eje x, y en el eje y nos indicará si tienen 4, 6 u 8 cilindros. 
+```{r}
+barplot(mtcars$cyl)
+
+```
+
+Quizás ese gráfico no es el ideal para reprentar estos datos. Ahora si combinamos el gráfico con la tabla obtenemos algo más interesante.
+```{r}
+barplot(table(mtcars$cyl))
+```
+Ahora el gráfico de barras tiene más sentido. Nos brinda información y agrupa por tipo de cilindro, las cuenta, y grafica. Tenga en cuenta la información que brinda esta columna, los datos en lugar de ser 4, 6 y 8 podría ser nombres, no confundir variables categóricas con numéricas, aunque sean números.  
+
+Sigamos con el gráfico y hacer algo más bonito.   
+    * cambiar el color a las barras col = 'blue'
+    * Titulo: main = "Cantidad de Cilindros por autos"
+    * Subtitulo: sub = "set mtcars"
+    * Nombre eje x: xlab = "cilindros"
+    * Nombre eje y; ylab = "cantidad"  
+```{r}
+barplot(table(mtcars$cyl),
+       col = 'blue',
+       main = "Cantidad de Cilindros por autos",
+       sub = "set mtcars",
+       xlab = "cilindros",
+       ylab = "cantidad"
+       )
+
+```
+  
+    
+Puedes tambien voltear las barras usando  horiz = T, en este caso no lo recomiendo pero lo puedes probar como queda. ten en cuenta los nombres de los ejes.
+
+Cuando agregas opciones en la función barplot y en otras, siempre usa una "," para cada opción que agregas.
+
+  
+### Comparemos esta gráfica con ggplot2
+ggplot2 es una librería para gráficos realmente muy linda y completa.
+Para instalar el paquete sino lo tienes instalado usas install.packages("ggplot2"). Si tienes instalado "tidyverse" está incluido en ese paquete. Para activarlo puedes hacer library(ggplot2). En ggplot tiene que tener en cuenta que luego de cada indicación debe ir el signo "+". En este caso se llama a la función ggplot() dentro del () se coloca el set de datos, mapping = que es como funciona ggplot con capas, en este caso es como mapear los datos en el grafico. aes = que es la estética que tendrá el gráfico, y en x, observe que se pasa a factor() la variable cyl. En coord_flip() es para volvear las barras. Tambien se le puede colocar titulos, colores y hacerlo bonito.
+
+```{r}
+library(ggplot2)
+
+ggplot(data=mtcars,
+       mapping = aes(x = factor(cyl)))+
+  geom_bar()+
+  coord_flip()
+```
+
+Otra ventaja que es bueno ir aprendiendo es que podemos asignar a un código inicial, nuevas opciones y enriquecerlo. Por ejemplo, Ahora queremos agregar al gráfico de barras de las cilindradas, el tipo de cambio o gear. Pero combinados. Agregamos la opcion "fill=" al código. Pasamos los datos a factor con el codigo fill= factor(gear). Esto debe ir dentro de la estética, aes = inicial.
+
+```{r}
+p<- ggplot(data=mtcars,
+       mapping = aes(x = factor(cyl),
+                     fill = factor(gear)))
+```
+Este código no realiza nada ya que no le hemos indicado a R como debe graficar. Le dijimos que datos usaremos pero no como los queremos. Debemos indicar que tipo de geom_ en este caso queremos barras, usaremos geom_bar()  Esta gráfico usa por default la posición de las barras, las barras son los cilindros, y los colores son las marchas. La posición es stack
+
+```{r}
+p + geom_bar()
+```
+
+```{r}
+p + geom_bar(position = 'dodge', stat = 'count') #barras separadas
+
+```
+En el siguiente gráfico no tiene sentido lo que se muestra pero si tiene sentido el aprendizaje de como mostrar información y como usar las barras.
+```{r}
+p + geom_bar(position = 'fill', stat = 'count') #las barras tiene una misma altura, 
+
+```
+  
+Aquí agregamos un detalle en la leyenda, en el apartado de la derecha, en lugar que aparezca factor(gear) lo cambiamos por +labs(fill="leyenda"). en este caso usamos fill= xq arriba estamos indicando que gear va con fill.  
+```{r}
+p + geom_bar()+
+  labs(fill = "leyenda")
+```
+
